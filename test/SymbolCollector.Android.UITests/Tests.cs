@@ -12,11 +12,34 @@ namespace SymbolCollector.Android.UITests
     {
         private AndroidApp _app = default!;
 
+        
+        private string GetDirectoryWithSubFolder(string subFolderName, string path)
+        {
+            var directory = Directory.GetParent(path);
+            for (int searchLimit = 6; searchLimit >= 0; searchLimit--)
+            {
+                var subdirs = directory.GetDirectories();
+                if (subdirs.Any(d => d.Name == subFolderName))
+                {
+                    return directory.FullName;
+                }
+                directory = directory.Parent;
+            }
+            return string.Empty;
+        }
+
+        private string GetApkPath()
+        {
+            var path = GetDirectoryWithSubFolder("src", AppDomain.CurrentDomain.BaseDirectory);
+            path = Path.Combine(path, "src/SymbolCollector.Android/bin/Release/io.sentry.symbol.collector-Signed.apk");
+            return path;
+        }
+
         [SetUp]
         public void BeforeEachTest()
         {
             var setup = ConfigureApp.Android;
-            const string apkPath = "../../../../src/SymbolCollector.Android/bin/Release/io.sentry.symbol.collector-Signed.apk";
+            var apkPath = GetApkPath();
             if (File.Exists(apkPath))
             {
                 setup = setup.ApkFile(apkPath);
@@ -35,6 +58,7 @@ namespace SymbolCollector.Android.UITests
 
             _app = setup
                 .PreferIdeSettings()
+                //     .InstalledApp("io.sentry.symbol.collector")
                 .StartApp();
         }
 
