@@ -117,7 +117,7 @@ namespace SymbolCollector.Console
                     await uploader.StartUploadSymbols(new[] {args.Path}, args.BundleId, args.Cancellation.Token);
                     break;
             }
-            //a
+            //b
             if (args.Check is { } checkLib)
             {
                 if (!File.Exists(args.Check))
