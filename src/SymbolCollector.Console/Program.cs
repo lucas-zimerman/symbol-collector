@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -117,7 +117,7 @@ namespace SymbolCollector.Console
                     await uploader.StartUploadSymbols(new[] {args.Path}, args.BundleId, args.Cancellation.Token);
                     break;
             }
-
+            //b
             if (args.Check is { } checkLib)
             {
                 if (!File.Exists(args.Check))
